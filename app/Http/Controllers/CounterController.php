@@ -13,10 +13,10 @@ class CounterController extends Controller
   {
     $visits = Redis::get('visits');
     Redis::incr('visits');
-    return view('counter', [
+    return response()->json([
       'date' => Carbon::now()->isoFormat('MMMM Do YYYY, h:mm:ss a'),
       'hostname' => gethostname(),
-      'visits' => $visits == 0 ? 'First visit' : $visits,
+      'visits' => $visits == 0 ? null : (int)$visits,
       'ip' => $request->ip(),
       'render_time' => microtime(true) - LARAVEL_START
     ]);
